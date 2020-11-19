@@ -19,7 +19,9 @@ import java.io.IOException;
  */
 
 public class WordCount {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws IOException,
+            ClassNotFoundException,
+            InterruptedException {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(WordCount.class);

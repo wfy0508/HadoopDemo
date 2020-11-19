@@ -18,7 +18,8 @@ public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritab
     private IntWritable result = new IntWritable(0);
 
     @Override
-    protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+    protected void reduce(Text key, Iterable<IntWritable> values, Context context)
+            throws IOException, InterruptedException {
         int sum = 0;
         for (IntWritable value : values) {
             sum += value.get();

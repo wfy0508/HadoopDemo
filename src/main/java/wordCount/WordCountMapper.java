@@ -20,7 +20,8 @@ public class WordCountMapper extends Mapper<Object, Text, Text, IntWritable> {
     private Text word = new Text();
 
     @Override
-    protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+    protected void map(Object key, Text value, Context context) throws IOException,
+            InterruptedException {
         StringTokenizer itr = new StringTokenizer(value.toString());
         while (itr.hasMoreTokens()) {
             word.set(itr.nextToken());
