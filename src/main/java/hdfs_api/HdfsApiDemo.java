@@ -152,4 +152,38 @@ public class HdfsApiDemo {
         fileSystem.close();
     }
 
+    /*
+    上传文件
+     */
+    @Test
+    public void uploadFile1() throws URISyntaxException, IOException {
+        FileSystem fileSystem = FileSystem.get(new URI(hdfsUri), new Configuration());
+        // 直接调用拷贝方法
+        fileSystem.copyFromLocalFile(new Path("D:\\test.txt"), new Path("/dir1"));
+        fileSystem.close();
+    }
+
+    /*
+    上传本地文件，并合并为大文件
+     */
+    @Test
+    public void uploadAndMergeFile() throws URISyntaxException, IOException {
+        // 获取分布式文件系统
+        FileSystem fileSystem = FileSystem.get(new URI(hdfsUri), new Configuration());
+        // 创建一个输出流
+        FSDataOutputStream outputStream = fileSystem.create(new Path("/hadoop_test/bigFile.txt"));
+        // 获取本地文件系统
+        LocalFileSystem localFileSystem = FileSystem.getLocal(new Configuration());
+        // 通过本地文件系统获取文件列表，为一个集合
+        FileStatus[] fileStatuses = localFileSystem.listStatus(new Path("D:\\hadoop_test\\little_files"));
+        for (FileStatus fileStatus : fileStatuses) {
+            FSDataInputStream inputStream = localFileSystem.open(fileStatus.getPath());
+            IOUtils.copy(inputStream, outputStream);
+            IOUtils.closeQuietly();
+        }
+        IOUtils.closeQuietly(outputStream);
+        localFileSystem.close();
+        fileSystem.close();
+    }
+
 }
