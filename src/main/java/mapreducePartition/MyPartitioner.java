@@ -21,7 +21,7 @@ public class MyPartitioner extends Partitioner<Text, NullWritable> {
     public int getPartition(Text text, NullWritable nullWritable, int i) {
         // 1. 拆分文本数据，获取指定的字段值
         String[] split = text.toString().split("\t");
-        String numString = split[5];
+        String numString = split[4];
         // 2. 判断字段值和15的关系
         if (Integer.parseInt(numString) > 15) {
             return 1;

@@ -52,8 +52,8 @@ public class WordCount extends Configured implements Tool {
 
         // 2.7 指定map阶段使用的类和输出的键值对类型
         job.setReducerClass(WordCountReducer.class); // 指定reduce阶段使用的类
-        job.setMapOutputKeyClass(Text.class); // 设置reduce阶段K3的类型
-        job.setMapOutputValueClass(LongWritable.class); // 设置reduce阶段V3的类型
+        job.setOutputKeyClass(Text.class); // 设置reduce阶段K3的类型
+        job.setOutputValueClass(LongWritable.class); // 设置reduce阶段V3的类型
 
         // 2.8 设置输出类型
         job.setOutputFormatClass(TextOutputFormat.class);
