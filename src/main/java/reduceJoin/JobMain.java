@@ -1,4 +1,4 @@
-package dataFlowCount;
+package reduceJoin;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -15,53 +15,52 @@ import java.net.URI;
 
 /**
  * @Description
- * @Package PACKAGE_NAME
+ * @Package ReduceJoin
  * @Author wfy
  * @Version V1.0.0
- * @Date 2020/12/13 18:16
+ * @Date 2020/12/15 15:59
  */
 
+// Reduce段的join操作可能造成数据倾斜
 public class JobMain extends Configured implements Tool {
-    // 设置连接的IP和端口
-    String hdfsUri = "hdfs://192.168.168.10:9000";
+    // 设置连接的服务器和端口
+    String HdfsUri = "hdfs://192.168.168.10:9000";
 
     @Override
     public int run(String[] strings) throws Exception {
-        // 1. 创建一个Job任务对象
-        Job job = Job.getInstance(super.getConf(), "mapreduce_dataflow_count");
-        job.setJar("HadoopDemo-1.0-SNAPSHOT.jar"); //集群模式
+        // 1. 获取Job对象
+        Job job = Job.getInstance(super.getConf(), "reduceJoin");
+        job.setJar("HadoopDemo-1.0-SNAPSHOT.jar"); // 集群模式
 
-        // 2. 设置Job任务的步骤（共8个步骤）
-        // 2.1 指定文件读取使用的类和文件路径
+        // 2. 文件读取使用的类和输入路径
         job.setInputFormatClass(TextInputFormat.class);
-        Path inputPath = new Path(hdfsUri + "/dataflow_input");
+        Path inputPath = new Path(HdfsUri + "/reduce_join_input");
         TextInputFormat.addInputPath(job, inputPath);
 
-        // 2.2 指定Mapper类和键值对类型
-        job.setMapperClass(FlowMapper.class);
+        // 3. 设置Mapper类和输出的键值对类型
+        job.setMapperClass(ReduceJoinMapper.class);
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(FlowBean.class);
+        job.setMapOutputValueClass(Text.class);
 
-        // 2.3（分区）, 2.4（排序）, 2.5（规约）, 2.6（分组）使用默认值
+        // 分区, 排序, 规约, 分组使用默认值
 
-        // 2.7 指定Reducer类和输出键值对
-        job.setReducerClass(FlowReducer.class);
-
-        // 2.8 指定输出键值对类型和输出路径
+        // 4. 设置Reducer类和输出键值对类型
+        job.setReducerClass(ReduceJoinReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(FlowBean.class);
-        FileSystem fileSystem = FileSystem.get(URI.create(hdfsUri), new Configuration());
-        Path outputPath = new Path(hdfsUri + "/dataflow_output");
+        job.setOutputValueClass(Text.class);
+
+        // 5. 设置输出类型和输出路径
+        job.setOutputFormatClass(TextOutputFormat.class);
+        FileSystem fileSystem = FileSystem.get(URI.create(HdfsUri), new Configuration());
+        Path outputPath = new Path(HdfsUri + "/reduce_join_output");
         boolean exists = fileSystem.exists(outputPath);
         if (exists) {
             fileSystem.delete(outputPath, true);
         }
         TextOutputFormat.setOutputPath(job, outputPath);
 
-        // 3. 等待任务结束
+        // 6. 等待任务结束
         boolean completion = job.waitForCompletion(true);
-
-        // 4. 返回
         return completion ? 0 : 1;
     }
 
