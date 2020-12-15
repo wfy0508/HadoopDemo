@@ -1,4 +1,4 @@
-package dataFlowStatics;
+package dataFlowCount;
 
 import org.apache.hadoop.io.Writable;
 

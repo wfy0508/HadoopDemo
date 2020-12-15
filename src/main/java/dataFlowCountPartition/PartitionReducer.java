@@ -1,4 +1,4 @@
-package dataFlowStatics;
+package dataFlowCountPartition;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -7,13 +7,13 @@ import java.io.IOException;
 
 /**
  * @Description
- * @Package dataFlowStatics
+ * @Package dataFlowCountSort
  * @Author wfy
  * @Version V1.0.0
- * @Date 2020/12/13 21:51
+ * @Date 2020/12/14 11:23
  */
 
-public class FlowReducer extends Reducer<Text, FlowBean, Text, FlowBean> {
+public class PartitionReducer extends Reducer<Text, FlowBean, Text, FlowBean> {
     /*
      * key: K2
      * values: V2
@@ -27,6 +27,7 @@ public class FlowReducer extends Reducer<Text, FlowBean, Text, FlowBean> {
      * K3           V3
      * 13979667793  FlowBean(50	259	91234	100330)
      */
+
     @Override
     protected void reduce(Text key, Iterable<FlowBean> values, Context context) throws IOException, InterruptedException {
         // 1. 遍历集合，将4个字段分别求和
