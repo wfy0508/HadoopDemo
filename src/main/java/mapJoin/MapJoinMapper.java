@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 
 public class MapJoinMapper extends Mapper<LongWritable, Text, Text, Text> {
-    private HashMap<String, String> map = new HashMap<>();
+    private final HashMap<String, String> map = new HashMap<>();
 
     // 1. 将分布式小表数据读取到本地Map集合
     @Override
@@ -48,8 +48,8 @@ public class MapJoinMapper extends Mapper<LongWritable, Text, Text, Text> {
         }
 
         // 1.5 关闭流
-        bufferedReader.close();
-        fileSystem.close();
+        //bufferedReader.close();
+        //fileSystem.close();
     }
 
     // 2. 处理大表，并实现大表和小表的关联
