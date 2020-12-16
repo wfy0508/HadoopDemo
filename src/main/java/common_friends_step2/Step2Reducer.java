@@ -34,12 +34,13 @@ public class Step2Reducer extends Reducer<Text, Text, Text, Text> {
         // 1. 原来的K2就是K3
 
         // 2. 遍历集合，拼接元素得到V3
-        StringBuilder buffer = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         for (Text value : values) {
-            buffer.append(value).append("-");
+            builder.append(value).append("-");
         }
+        builder.deleteCharAt(builder.length()-1);
 
         // 3. 将K3, V3写入上下文
-        context.write(key, new Text(buffer.toString()));
+        context.write(key, new Text(builder.toString()));
     }
 }

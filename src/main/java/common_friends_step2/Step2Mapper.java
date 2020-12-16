@@ -56,7 +56,7 @@ public class Step2Mapper extends Mapper<LongWritable, Text, Text, Text> {
         for (int i = 0; i < userArrays.length - 1; i++) {
             for (int j = i + 1; j < userArrays.length; j++) {
                 // 5. 将K2, V2写入上下文
-                context.write(new Text(userArrays[i] + "=" + userArrays[j]), new Text(friend_str));
+                context.write(new Text(userArrays[i] + "-" + userArrays[j]), new Text(friend_str));
             }
         }
     }
