@@ -21,7 +21,7 @@ public class TopReducer extends Reducer<OrderBean, Text, Text, NullWritable> {
         for (Text value : values) {
             context.write(value, NullWritable.get());
             i++;
-            if (i > 1) { // Top1
+            if (i >= 1) { // Top1
                 break;
             }
         }

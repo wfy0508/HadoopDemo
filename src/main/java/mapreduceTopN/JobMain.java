@@ -56,7 +56,7 @@ public class JobMain extends Configured implements Tool {
 
         // 2.8指定输出类和输出路径
         job.setOutputFormatClass(TextOutputFormat.class);
-        Path outputPath = new Path(hdfsUri + "/topN_input_output");
+        Path outputPath = new Path(hdfsUri + "/topN_output");
         FileSystem fileSystem = FileSystem.get(new URI(hdfsUri), new Configuration());
         boolean exists = fileSystem.exists(outputPath);
         if (exists) {
