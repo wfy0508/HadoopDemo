@@ -29,6 +29,7 @@ public class MyInputFormat extends FileInputFormat<NullWritable, BytesWritable> 
         MyRecordReader myRecordReader = new MyRecordReader();
         // 将inputSplit，taskAttemptContext传给myRecordReader
         myRecordReader.initialize(inputSplit, taskAttemptContext);
+        return myRecordReader;
     }
 
     // 文件是否被切割，因为是小文件合并，所以设置为不可切割，返回false
