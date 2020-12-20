@@ -23,17 +23,18 @@ import java.net.URI;
  */
 
 public class JobMain extends Configured implements Tool {
-    String hdfsUri = "hdfs://192.168.168.10:9000";
+    //String hdfsUri = "hdfs://192.168.168.10:9000";
     @Override
     public int run(String[] strings) throws Exception {
         // 1. 创建Job对象
         Job job = Job.getInstance(super.getConf(), "mapreduce_TopN");
-        job.setJar("HadoopDemo-1.0-SNAPSHOT.jar"); // 提交到YARN集群，需要指定jar包的名称，不然找不到Mapper和Reducer的class文件
+        //job.setJar("HadoopDemo-1.0-SNAPSHOT.jar"); // 提交到YARN集群，需要指定jar包的名称，不然找不到Mapper和Reducer的class文件
 
         // 2. 对Job任务进行配置
         // 2.1 设置文件的读取路径和读取使用的类
         job.setInputFormatClass(TextInputFormat.class);
-        Path inputPath = new Path(hdfsUri + "/topN_input");
+        //Path inputPath = new Path(hdfsUri + "/topN_input");
+        Path inputPath = new Path("file:///D:\\hadoop_test\\topN_input");
         TextInputFormat.addInputPath(job, inputPath);
 
         // 2.2 设置Mapper类和数据类型(K2, V2)
@@ -56,12 +57,15 @@ public class JobMain extends Configured implements Tool {
 
         // 2.8指定输出类和输出路径
         job.setOutputFormatClass(TextOutputFormat.class);
-        Path outputPath = new Path(hdfsUri + "/topN_output");
-        FileSystem fileSystem = FileSystem.get(new URI(hdfsUri), new Configuration());
-        boolean exists = fileSystem.exists(outputPath);
-        if (exists) {
-            fileSystem.delete(outputPath, true);
-        }
+        //Path outputPath = new Path(hdfsUri + "/topN_output");
+        Path outputPath = new Path("file:///D:\\hadoop_test\\topN_output");
+        //FileSystem fileSystem = FileSystem.get(new URI(hdfsUri), new Configuration());
+        //boolean exists = fileSystem.exists(outputPath);
+        //if (exists) {
+        //    fileSystem.delete(outputPath, true);
+        //}
+
+
         TextOutputFormat.setOutputPath(job, outputPath);
 
         // 3. 等待任务结束
