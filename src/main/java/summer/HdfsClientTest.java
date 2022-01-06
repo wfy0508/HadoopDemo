@@ -1,8 +1,7 @@
 package summer;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 /**
  * @author summer
@@ -68,7 +68,6 @@ public class HdfsClientTest {
     public void putFileTest() throws IOException {
         Path src = new Path("/Users/summer/Downloads/upload/xsync.sh");
         Path dst = new Path("/xiyou");
-        fs.setTimes(dst, 0, 3000);
         fs.copyFromLocalFile(src, dst);
     }
 
@@ -79,6 +78,29 @@ public class HdfsClientTest {
     public void pullFileTest() throws IOException {
         Path src = new Path("/xiyou/xsync.sh");
         Path dst = new Path("/Users/summer/Downloads/upload/");
-        fs.copyToLocalFile(true, src, dst);
+        // delSrc: 是否删除源文件
+        fs.copyToLocalFile(false, src, dst);
+    }
+
+    /**
+     * 获取文件信息
+     */
+    @Test
+    public void listFilesTest() throws IOException {
+        RemoteIterator<LocatedFileStatus> files = fs.listFiles(new Path("/"), true);
+        while (files.hasNext()) {
+            LocatedFileStatus file = files.next();
+            System.out.println("-----------" + file.getPath() + "-----------");
+            System.out.println("权限信息：" + file.getPermission());
+            System.out.println("拥有者：" + file.getOwner());
+            System.out.println("所属组：" + file.getGroup());
+            System.out.println("长度：" + file.getLen());
+            System.out.println("副本数：" + file.getReplication());
+            System.out.println("文件名：" + file.getPath().getName());
+            // 获取块信息
+            BlockLocation[] locations = file.getBlockLocations();
+            System.out.println(Arrays.toString(locations));
+
+        }
     }
 }
