@@ -39,7 +39,9 @@ public class OrderBean implements WritableComparable<OrderBean> {
         return orderId + "\t" + price;
     }
 
-    // 指定排序规则
+    /**
+     * 指定排序规则
+     */
     @Override
     public int compareTo(OrderBean o) {
         // 先比较订单ID，如果一直对相同ID的金额降序排列

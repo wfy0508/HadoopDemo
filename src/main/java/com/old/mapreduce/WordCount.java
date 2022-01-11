@@ -38,10 +38,13 @@ public class WordCount extends Configured implements Tool {
 
         // 2. 设置Job任务步骤（8个阶段）
         // 2.1 指定读取文件使用的类和源文件路径
-        job.setJar("HadoopDemo-1.0-SNAPSHOT.jar"); // 提交到YARN集群，需要指定jar包的名称，不然找不到Mapper和Reducer的class文件
-        job.setInputFormatClass(TextInputFormat.class); // 指定读取文件使用的类
+        // 提交到YARN集群，需要指定jar包的名称，不然找不到Mapper和Reducer的class文件
+        job.setJar("HadoopDemo-1.0-SNAPSHOT.jar");
+        // 指定读取文件使用的类
+        job.setInputFormatClass(TextInputFormat.class);
         Path inputPath = new Path(hdfsUri + "/wordcount");
-        TextInputFormat.addInputPath(job, inputPath); // 指定文件读取路径（集群模式）
+        // 指定文件读取路径（集群模式）
+        TextInputFormat.addInputPath(job, inputPath);
 
         // 指定文件读取路径（本地模式，要写成文件，不然会报错，应该是不支持多文件处理）
         //TextInputFormat.addInputPath(job, new Path("file:///D:\\hadoop_test\\input\\little1.txt"));
@@ -50,15 +53,20 @@ public class WordCount extends Configured implements Tool {
         // 2.2 指定map阶段使用的类和输出的键值对类型
         // 指定map阶段使用的类
         job.setMapperClass(WordCountMapper.class);
-        job.setMapOutputKeyClass(Text.class); // 设置map阶段K2的类型
-        job.setMapOutputValueClass(LongWritable.class); // 设置map阶段V2的类型
+        // 设置map阶段K2的类型
+        job.setMapOutputKeyClass(Text.class);
+        // 设置map阶段V2的类型
+        job.setMapOutputValueClass(LongWritable.class);
 
         // 2.3...2.6等4个阶段（分区，排序，规约，分组）使用默认值
 
         // 2.7 指定map阶段使用的类和输出的键值对类型
-        job.setReducerClass(WordCountReducer.class); // 指定reduce阶段使用的类
-        job.setOutputKeyClass(Text.class); // 设置reduce阶段K3的类型
-        job.setOutputValueClass(LongWritable.class); // 设置reduce阶段V3的类型
+        // 指定reduce阶段使用的类
+        job.setReducerClass(WordCountReducer.class);
+        // 设置reduce阶段K3的类型
+        job.setOutputKeyClass(Text.class);
+        // 设置reduce阶段V3的类型
+        job.setOutputValueClass(LongWritable.class);
 
         // 2.8 设置输出类型
         job.setOutputFormatClass(TextOutputFormat.class);
@@ -72,7 +80,8 @@ public class WordCount extends Configured implements Tool {
             fileSystem.delete(outputPath, true);
         }
 
-        TextOutputFormat.setOutputPath(job, outputPath); //集群模式
+        //集群模式
+        TextOutputFormat.setOutputPath(job, outputPath);
         //TextOutputFormat.setOutputPath(job, new Path("file:///D:\\hadoop_test\\output")); // 本地模式
 
         // 2.9 等待任务结束
