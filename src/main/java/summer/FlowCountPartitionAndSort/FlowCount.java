@@ -1,4 +1,4 @@
-package summer.FlowCountPartitioner;
+package summer.FlowCountPartitionAndSort;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -15,6 +15,7 @@ import java.io.IOException;
  * @projectName HadoopDemo
  * @description: TODO
  * @date 2022-01-10 11:23
+ * 将输出结果按照总流量降序排列
  */
 public class FlowCount {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -27,22 +28,19 @@ public class FlowCount {
         job.setMapperClass(FlowMapper.class);
         job.setReducerClass(FlowReducer.class);
         // 4 设置Mapper输出的key和value类型
-        job.setMapOutputKeyClass(Text.class);
-        job.setOutputValueClass(FlowBean.class);
+        job.setMapOutputKeyClass(FlowBean.class);
+        job.setMapOutputValueClass(Text.class);
 
-        // 设置分区类和Reducer的数量
+        //设置分区类和Reducer的数量
         job.setPartitionerClass(MyPartitioner.class);
-        // 如果设置为1，走默认分区类，不会走自定义Partitioner
-        // 如果设置小于自定义分区数量，分区数量不够，则会报错
-        // 如果设置大于自定义分区数量，则多出来的分区输出为空
         job.setNumReduceTasks(5);
 
         // 5 设置最终输出的key和value类型
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FlowBean.class);
         // 6 设置输入和输出路径
-        FileInputFormat.setInputPaths(job, new Path("/Users/summer/downloads/phoneFlow.txt"));
-        FileOutputFormat.setOutputPath(job, new Path("/Users/summer/downloads/phoneFlow1"));
+        FileInputFormat.setInputPaths(job, new Path("/Users/summer/downloads/dataSet/phoneFlow.txt"));
+        FileOutputFormat.setOutputPath(job, new Path("/Users/summer/downloads/HadoopOutput/phoneFlow1"));
         // 7 提交Job
         final boolean result = job.waitForCompletion(true);
         System.exit(result ? 0 : 1);
