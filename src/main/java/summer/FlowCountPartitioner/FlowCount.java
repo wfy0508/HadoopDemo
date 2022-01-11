@@ -32,6 +32,9 @@ public class FlowCount {
 
         // 设置分区类和Reducer的数量
         job.setPartitionerClass(MyPartitioner.class);
+        // 如果设置为1，走默认分区类，不会走自定义Partitioner
+        // 如果设置小于自定义分区数量，则会报错
+        // 如果设置大于自定义分区数量，则多出来的分区输出为空
         job.setNumReduceTasks(5);
 
         // 5 设置最终输出的key和value类型
