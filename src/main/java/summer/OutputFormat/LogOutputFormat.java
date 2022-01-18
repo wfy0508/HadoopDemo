@@ -14,6 +14,7 @@ import java.io.IOException;
  * @projectName HadoopDemo
  * @description: TODO
  * @date 2022-01-12 21:49
+ * 自定义输出类，将包含summer的网址输出到summer.log，其他网址输出到other.log中
  */
 public class LogOutputFormat extends FileOutputFormat<Text, NullWritable> {
     @Override

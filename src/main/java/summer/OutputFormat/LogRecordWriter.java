@@ -49,7 +49,7 @@ class LogRecordWriter extends RecordWriter<Text, NullWritable> {
     }
 
     @Override
-    public void close(TaskAttemptContext context) throws IOException, InterruptedException {
+    public void close(TaskAttemptContext context) {
         // 关闭流
         IOUtils.closeStream(summerOut);
         IOUtils.closeStream(othOut);
