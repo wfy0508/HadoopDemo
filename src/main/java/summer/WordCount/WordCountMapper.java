@@ -18,7 +18,7 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritabl
     /**
      * 输出Key和输出Value
      */
-    private final Text text = new Text();
+    private final Text outKey = new Text();
     private final IntWritable outValue = new IntWritable(1);
 
     @Override
@@ -26,8 +26,8 @@ public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritabl
         String line = value.toString();
         String[] strings = line.split(" ,?.");
         for (String s : strings) {
-            text.set(s);
-            context.write(text, outValue);
+            outKey.set(s);
+            context.write(outKey, outValue);
         }
     }
 }
